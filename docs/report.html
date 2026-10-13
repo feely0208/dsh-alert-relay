@@ -1,0 +1,79 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>深鲸守护 · 告警外发 · 检查报告</title>
+<style>
+  :root{--bg:#0b1018;--fg:#e6edf6;--muted:#8b9bb4;--line:#1e2a3a;--card:#121a26}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.6 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:32px}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card .k{color:var(--muted);font-size:12px;margin-bottom:6px}
+  .card .v{font-size:20px;font-weight:700}
+  .chip{display:inline-block;padding:3px 10px;border-radius:999px;margin:0 6px 6px 0;font-size:13px;
+        border:1px solid var(--c);color:var(--c)}
+  .chip b{font-size:15px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}
+  th{color:var(--muted);font-weight:500;background:#0e1622}
+  tr:last-child td{border-bottom:0}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:6px}
+  .t{font-weight:600;margin-bottom:2px}
+  .src{color:var(--muted);font-size:12px}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#7dd3fc}
+  .ev{color:var(--muted);font-size:12px;margin-top:2px;word-break:break-all}
+  .adv{color:var(--muted);font-size:12px;max-width:260px}
+  .ok{background:#0d2b1a;border:1px solid #1d7a4a;color:#4ade80;padding:16px;border-radius:12px;margin-bottom:20px}
+  .warn{background:#2b1f0d;border:1px solid #a16207;color:#fbbf24;padding:12px 16px;border-radius:12px;margin-bottom:20px;font-size:13px}
+  footer{color:var(--muted);font-size:12px;margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+  footer p{margin:3px 0}
+</style></head><body><div class="wrap">
+  <h1>深鲸守护 · 告警外发</h1>
+  <div class="sub">检查告警链路：有没有告警、发到哪、有没有把敏感信息一起发出去</div>
+
+  <div class="cards">
+    <div class="card"><div class="k">扫描文件</div><div class="v">2</div></div>
+    <div class="card"><div class="k">检查规则</div><div class="v">4<span style="font-size:13px;color:var(--muted)">/4</span></div></div>
+    <div class="card"><div class="k">命中</div><div class="v" style="color:#ea580c">4</div></div>
+    <div class="card"><div class="k">已跳过目录</div><div class="v">0</div></div>
+  </div>
+
+  
+  <div class="warn">⚠️ 扫描到的文件很少，请确认扫描目录是否正确 —— <b>不要因「全绿」就放心</b>。</div>
+  
+
+  <div style="margin-bottom:16px"><span class="chip" style="--c:#ea580c">高 <b>2</b></span><span class="chip" style="--c:#ca8a04">中 <b>2</b></span></div>
+       <table><thead><tr><th>级别</th><th>问题</th><th>位置 / 证据</th><th>建议</th></tr></thead>
+       <tbody>
+      <tr class="sev-high">
+        <td><span class="dot" style="--c:#ea580c"></span>高</td>
+        <td><div class="t">告警内容里带了敏感信息</div><div class="src">GB/T 22239-2019 第三级 · 安全计算环境 · 数据保密性（鉴别信息不应出现在非受控通道）；OWASP — Sensitive Data Exposure</div></td>
+        <td><code>notify.js:4</code><div class="ev">post(hookUrl, { text: err.stack + JSON.stringify(req.body</div></td>
+        <td class="adv">告警会经过第三方通道（webhook / 邮件 / IM），可能还有群成员。把 err.stack、完整请求体、用户数据、令牌放进告警，等于<b>把敏感信息复制到一个管控更弱的地方</b>。改为：只发摘要 + 一个内部可查的 trace id。</td>
+      </tr>
+      <tr class="sev-high">
+        <td><span class="dot" style="--c:#ea580c"></span>高</td>
+        <td><div class="t">告警 webhook 使用明文 http://</div><div class="src">GB/T 22239-2019 第三级 · 安全通信网络 · 通信传输 —— 应保证通信过程中数据的完整性与保密性</div></td>
+        <td><code>notify.js:2</code><div class="ev">'http://oapi.dingtalk.com/robot/send?access_token=abc123'</div></td>
+        <td class="adv">webhook 地址带密钥（如钉钉/企业微信的 access_token 就在 URL 里），走明文 http 等于把密钥和告警内容一起暴露在网络上。改成 https://（本规则已排除 localhost）。</td>
+      </tr>
+      <tr class="sev-medium">
+        <td><span class="dot" style="--c:#ca8a04"></span>中</td>
+        <td><div class="t">项目里找不到任何告警或错误上报配置</div><div class="src">GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（应能对安全事件告警）；GB/T 22239-2019 第三级 · 安全管理中心 · 安全运维管理</div></td>
+        <td><code>package.json</code><div class="ev">已检查 1 个文件，均未提到</div></td>
+        <td class="adv">有服务端代码，但找不到任何告警/上报痕迹。意味着：出事时<b>没人会被通知</b>，只能等用户投诉。至少要有：错误上报（Sentry 类）或告警外发（webhook 到企业微信/钉钉/Slack）。如果由部署层统一做，请在文档里写明。</td>
+      </tr>
+      <tr class="sev-medium">
+        <td><span class="dot" style="--c:#ca8a04"></span>中</td>
+        <td><div class="t">把带密钥的告警 URL 打进了日志</div><div class="src">GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（审计记录应受保护）· 数据保密性</div></td>
+        <td><code>notify.js:5</code><div class="ev">console.log('alert sent to ' + webhookUrl</div></td>
+        <td class="adv">钉钉/企业微信/Slack 的 webhook URL 里就带着 access_token —— 把它打进日志，等于把发送权限写进一个长期留存的地方。日志被读、被导出、被截图，那个 webhook 就能被任意人使用。打印前先脱敏。</td>
+      </tr></tbody></table>
+
+  <footer>
+    <p>扫描范围：<code>tests/fixtures/fail/demo-project</code> · 2 个文件</p>
+    <p>规则库：— · 生成时间：2026-10-13 02:47:42</p>
+    <p></p>
+  </footer>
+</div></body></html>

@@ -1,0 +1,14 @@
+{
+  "id": "ALERT-TOKEN-LOGGED",
+  "title": "把带密钥的告警 URL 打进了日志",
+  "severity": "medium",
+  "source": "GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（审计记录应受保护）· 数据保密性",
+  "advice": "钉钉/企业微信/Slack 的 webhook URL 里就带着 access_token —— 把它打进日志，等于把发送权限写进一个长期留存的地方。日志被读、被导出、被截图，那个 webhook 就能被任意人使用。打印前先脱敏。",
+  "check": {
+    "type": "file-pattern",
+    "pattern": "(log|logger|console|print)[\\w.]*\\s*\\([^)]{0,100}(webhookUrl|webhook_url|hookUrl|hook_url|oapi\\.dingtalk|qyapi\\.weixin)",
+    "flags": "gi",
+    "exts": [".js", ".mjs", ".cjs", ".ts", ".py", ".go", ".java", ".rb", ".php"],
+    "max": 20
+  }
+}

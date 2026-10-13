@@ -1,0 +1,14 @@
+{
+  "id": "ALERT-SENSITIVE-PAYLOAD",
+  "title": "告警内容里带了敏感信息",
+  "severity": "high",
+  "source": "GB/T 22239-2019 第三级 · 安全计算环境 · 数据保密性（鉴别信息不应出现在非受控通道）；OWASP — Sensitive Data Exposure",
+  "advice": "告警会经过第三方通道（webhook / 邮件 / IM），可能还有群成员。把 err.stack、完整请求体、用户数据、令牌放进告警，等于**把敏感信息复制到一个管控更弱的地方**。改为：只发摘要 + 一个内部可查的 trace id。",
+  "check": {
+    "type": "file-pattern",
+    "pattern": "(send|post|notify|alert|webhook|push)[\\w.]*\\s*\\([^)]{0,120}(err\\.stack|error\\.stack|JSON\\.stringify\\(req\\.body|req\\.body|password|token|secret|idcard|phone)",
+    "flags": "gi",
+    "exts": [".js", ".mjs", ".cjs", ".ts", ".tsx", ".py", ".go", ".java", ".rb", ".php"],
+    "max": 20
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "ALERT-PLAINTEXT-WEBHOOK",
+  "title": "告警 webhook 使用明文 http://",
+  "severity": "high",
+  "source": "GB/T 22239-2019 第三级 · 安全通信网络 · 通信传输 —— 应保证通信过程中数据的完整性与保密性",
+  "advice": "webhook 地址带密钥（如钉钉/企业微信的 access_token 就在 URL 里），走明文 http 等于把密钥和告警内容一起暴露在网络上。改成 https://（本规则已排除 localhost）。",
+  "check": {
+    "type": "file-pattern",
+    "pattern": "[\"']http://(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0|\\[::1\\])[^\"']*(webhook|hook|alert|notify|oapi|dingtalk|qyapi)[^\"']*[\"']",
+    "flags": "gi",
+    "exts": [".js", ".mjs", ".cjs", ".ts", ".py", ".go", ".java", ".rb", ".php", ".yml", ".yaml", ".json", ".env", ".ini", ".conf"],
+    "max": 20
+  }
+}

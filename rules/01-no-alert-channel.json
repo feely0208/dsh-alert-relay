@@ -1,0 +1,14 @@
+{
+  "id": "ALERT-NO-CHANNEL",
+  "title": "项目里找不到任何告警或错误上报配置",
+  "severity": "medium",
+  "source": "GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（应能对安全事件告警）；GB/T 22239-2019 第三级 · 安全管理中心 · 安全运维管理",
+  "advice": "有服务端代码，但找不到任何告警/上报痕迹。意味着：出事时**没人会被通知**，只能等用户投诉。至少要有：错误上报（Sentry 类）或告警外发（webhook 到企业微信/钉钉/Slack）。如果由部署层统一做，请在文档里写明。",
+  "check": {
+    "type": "files-lack",
+    "pattern": "sentry|webhook|slack|dingtalk|钉钉|企业微信|wecom|pagerduty|alertmanager|prometheus|grafana|opsgenie|告警|alert",
+    "flags": "i",
+    "paths": ["package.json", "requirements.txt", "go.mod", "pom.xml", "docker-compose.yml", "docker-compose.yaml", "*.yml", "*.yaml", "*.conf", "*.ini", "README.md", "docs/*.md", "docs/**/*.md"],
+    "evidence": "依赖与配置里都没有告警/上报痕迹"
+  }
+}
