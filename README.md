@@ -1,5 +1,7 @@
 # @deepwhale-cn/dsh-alert-relay
 
+[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/feely0208/dsh-alert-relay)
+
 **告警外发** —— 检查告警链路：有没有告警、发到哪、有没有把敏感信息一起发出去。
 
 ## 不装它会怎样
