@@ -3,7 +3,7 @@
 [![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/feely0208/dsh-alert-relay)
 
 
-**关键词**：告警外发 · 告警配置 · 应急响应 · 敏感信息外泄 · webhook 安全 · 告警链路
+**关键词**：告警外发 · 告警配置 · 应急响应 · 敏感信息外泄 · webhook 安全 · 告警链路 · 应急
 **Keywords**: alert relay · alerting · incident response · webhook security · sensitive data in alerts
 **告警外发** —— 检查告警链路：有没有告警、发到哪、有没有把敏感信息一起发出去。
 
