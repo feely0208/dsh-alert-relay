@@ -56,7 +56,7 @@ dsh-alert-relay --list-rules
 dsh-alert-relay --html r.html
 ```
 
-![报告示例](docs/report.png)
+![dsh-alert-relay 的检查报告示例](https://raw.githubusercontent.com/feely0208/dsh-alert-relay/main/docs/report.png)
 
 ## 边界
 
