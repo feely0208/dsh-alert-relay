@@ -56,7 +56,11 @@ dsh-alert-relay --list-rules
 dsh-alert-relay --html r.html
 ```
 
-![dsh-alert-relay 的检查报告示例](https://www.deepwhale.org.cn/plugin-assets/dsh-alert-relay/report.png)
+![dsh-alert-relay 检查报告示例](https://www.deepwhale.org.cn/plugin-assets/dsh-alert-relay/report.png)
+
+![dsh-alert-relay 演示模式输出](https://www.deepwhale.org.cn/plugin-assets/dsh-alert-relay/demo.png)
+
+![dsh-alert-relay 规则与依据](https://www.deepwhale.org.cn/plugin-assets/dsh-alert-relay/rules.png)
 
 ## 边界
 
