@@ -1,0 +1,65 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#0d0f13; display:flex; justify-content:center;
+         align-items:flex-start; padding:22px; font-family:-apple-system,"PingFang SC",
+         "Helvetica Neue",sans-serif; }
+  .win { width:1180px; border-radius:11px; overflow:hidden;
+          box-shadow:0 14px 44px rgba(0,0,0,.55); }
+  .bar { background:#2a2d34; padding:11px 15px; display:flex; align-items:center; gap:9px; }
+  .dot { width:12px; height:12px; border-radius:50%; }
+  .t { margin-left:11px; color:#7a8290; font-size:13px; letter-spacing:.02em; }
+  .term { background:#1b1d22; padding:20px 22px 24px; font-family:"SF Mono",Menlo,Consolas,
+           "PingFang SC",monospace; font-size:13.5px; line-height:1.72; }
+  .cmd { color:#5ee08a; margin-bottom:13px; font-size:13.5px; }
+  .cmd b { color:#fff; font-weight:600; }
+  .l { white-space:pre-wrap; word-break:break-word; }
+</style></head><body>
+  <div class="win">
+    <div class="bar">
+      <span class="dot" style="background:#ff5f57"></span>
+      <span class="dot" style="background:#febc2e"></span>
+      <span class="dot" style="background:#28c840"></span>
+      <span class="t">dsh-alert-relay · demo</span>
+    </div>
+    <div class="term">
+      <div class="cmd">$ <b>dsh-alert-relay --demo</b></div>
+      <div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  【演示模式】使用内置样本，不是你的真实项目。</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  深鲸守护 · 告警外发 v0.1.0</span></div>
+<div class="l"><span style="color:#d8dee9">  ──────────────────────────────────────────────────────────────────</span></div>
+<div class="l"><span style="color:#d8dee9">  扫描范围   内置演示样本 · 故意有问题的项目</span></div>
+<div class="l"><span style="color:#d8dee9">             2 个文件 · 0 个目录已跳过</span></div>
+<div class="l"><span style="color:#d8dee9">  检查规则   4/4 条</span></div>
+<div class="l"><span style="color:#ffd166">  命中       4 条</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#ff6b6b">  【高】2 条</span></div>
+<div class="l"><span style="color:#7a8290">    · 告警内容里带了敏感信息</span></div>
+<div class="l"><span style="color:#d8dee9">      位置  notify.js:4</span></div>
+<div class="l"><span style="color:#7a8290">      证据  post(hookUrl, { text: err.stack + JSON.stringify(req.body</span></div>
+<div class="l"><span style="color:#7a8290">      依据  GB/T 22239-2019 第三级 · 安全计算环境 · 数据保密性（鉴别信息不应出现在非受控通道）；OWASP — Sensitive Data Exposure</span></div>
+<div class="l"><span style="color:#d8dee9">      建议  告警会经过第三方通道（webhook / 邮件 / IM），可能还有群成员。把 err.stack、完整请求体、用户数据、令牌放进告警，等于**把敏感信息复制到一个管控更弱的地方**。改为：只发摘要 + 一个内部可查的 trace id。</span></div>
+<div class="l"><span style="color:#7a8290">    · 告警 webhook 使用明文 http://</span></div>
+<div class="l"><span style="color:#d8dee9">      位置  notify.js:2</span></div>
+<div class="l"><span style="color:#7a8290">      证据  &#x27;http://oapi.dingtalk.com/robot/send?access_token=abc123&#x27;</span></div>
+<div class="l"><span style="color:#7a8290">      依据  GB/T 22239-2019 第三级 · 安全通信网络 · 通信传输 —— 应保证通信过程中数据的完整性与保密性</span></div>
+<div class="l"><span style="color:#d8dee9">      建议  webhook 地址带密钥（如钉钉/企业微信的 access_token 就在 URL 里），走明文 http 等于把密钥和告警内容一起暴露在网络上。改成 https://（本规则已排除 localhost）。</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#ffd166">  【中】2 条</span></div>
+<div class="l"><span style="color:#7a8290">    · 项目里找不到任何告警或错误上报配置</span></div>
+<div class="l"><span style="color:#d8dee9">      位置  package.json</span></div>
+<div class="l"><span style="color:#7a8290">      证据  已检查 1 个文件，均未提到</span></div>
+<div class="l"><span style="color:#7a8290">      依据  GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（应能对安全事件告警）；GB/T 22239-2019 第三级 · 安全管理中心 · 安全运维管理</span></div>
+<div class="l"><span style="color:#d8dee9">      建议  有服务端代码，但找不到任何告警/上报痕迹。意味着：出事时**没人会被通知**，只能等用户投诉。至少要有：错误上报（Sentry 类）或告警外发（webhook 到企业微信/钉钉/Slack）。如果由部署层统一做，请在文档里写明。</span></div>
+<div class="l"><span style="color:#7a8290">    · 把带密钥的告警 URL 打进了日志</span></div>
+<div class="l"><span style="color:#d8dee9">      位置  notify.js:5</span></div>
+<div class="l"><span style="color:#7a8290">      证据  console.log(&#x27;alert sent to &#x27; + webhookUrl</span></div>
+<div class="l"><span style="color:#7a8290">      依据  GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（审计记录应受保护）· 数据保密性</span></div>
+<div class="l"><span style="color:#d8dee9">      建议  钉钉/企业微信/Slack 的 webhook URL 里就带着 access_token —— 把它打进日志，等于把发送权限写进一个长期留存的地方。日志被读、被导出、被截图，那个 webhook 就能被任意人使用。打印前先脱敏。</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  ──────────────────────────────────────────────────────────────────</span></div>
+    </div>
+  </div>
+</body></html>

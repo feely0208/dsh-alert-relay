@@ -1,0 +1,47 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#0d0f13; display:flex; justify-content:center;
+         align-items:flex-start; padding:22px; font-family:-apple-system,"PingFang SC",
+         "Helvetica Neue",sans-serif; }
+  .win { width:1180px; border-radius:11px; overflow:hidden;
+          box-shadow:0 14px 44px rgba(0,0,0,.55); }
+  .bar { background:#2a2d34; padding:11px 15px; display:flex; align-items:center; gap:9px; }
+  .dot { width:12px; height:12px; border-radius:50%; }
+  .t { margin-left:11px; color:#7a8290; font-size:13px; letter-spacing:.02em; }
+  .term { background:#1b1d22; padding:20px 22px 24px; font-family:"SF Mono",Menlo,Consolas,
+           "PingFang SC",monospace; font-size:13.5px; line-height:1.72; }
+  .cmd { color:#5ee08a; margin-bottom:13px; font-size:13.5px; }
+  .cmd b { color:#fff; font-weight:600; }
+  .l { white-space:pre-wrap; word-break:break-word; }
+</style></head><body>
+  <div class="win">
+    <div class="bar">
+      <span class="dot" style="background:#ff5f57"></span>
+      <span class="dot" style="background:#febc2e"></span>
+      <span class="dot" style="background:#28c840"></span>
+      <span class="t">dsh-alert-relay · rules</span>
+    </div>
+    <div class="term">
+      <div class="cmd">$ <b>dsh-alert-relay --list-rules</b></div>
+      <div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  深鲸守护 · 告警外发 —— 4 条规则</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  [medium] ALERT-NO-CHANNEL</span></div>
+<div class="l"><span style="color:#d8dee9">        项目里找不到任何告警或错误上报配置</span></div>
+<div class="l"><span style="color:#7a8290">        依据：GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（应能对安全事件告警）；GB/T 22239-2019 第三级 · 安全管理中心 · 安全运维管理</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  [high] ALERT-SENSITIVE-PAYLOAD</span></div>
+<div class="l"><span style="color:#d8dee9">        告警内容里带了敏感信息</span></div>
+<div class="l"><span style="color:#7a8290">        依据：GB/T 22239-2019 第三级 · 安全计算环境 · 数据保密性（鉴别信息不应出现在非受控通道）；OWASP — Sensitive Data Exposure</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  [high] ALERT-PLAINTEXT-WEBHOOK</span></div>
+<div class="l"><span style="color:#d8dee9">        告警 webhook 使用明文 http://</span></div>
+<div class="l"><span style="color:#7a8290">        依据：GB/T 22239-2019 第三级 · 安全通信网络 · 通信传输 —— 应保证通信过程中数据的完整性与保密性</span></div>
+<div class="l"><span style="color:#7a8290">&nbsp;</span></div>
+<div class="l"><span style="color:#d8dee9">  [medium] ALERT-TOKEN-LOGGED</span></div>
+<div class="l"><span style="color:#d8dee9">        把带密钥的告警 URL 打进了日志</span></div>
+<div class="l"><span style="color:#7a8290">        依据：GB/T 22239-2019 第三级 · 安全计算环境 · 安全审计（审计记录应受保护）· 数据保密性</span></div>
+    </div>
+  </div>
+</body></html>
